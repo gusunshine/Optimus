@@ -1,107 +1,56 @@
 <template>
-  <PageWrapper title="关于">
-    <template #headerContent>
-      <div class="flex justify-between items-center">
-        <span class="flex-1">
-          <a :href="GITHUB_URL" target="_blank">{{ name }}</a>
-          是一个基于Vue3.01、Vite、 Ant-Design-Vue 、TypeScript
-          的后台解决方案，目标是为中大型项目开发,提供现成的开箱解决方案及丰富的示例,原则上不会限制任何代码用于商用。
-        </span>
-      </div>
-    </template>
-    <Description @register="infoRegister" class="enter-y" />
-    <Description @register="register" class="my-4 enter-y" />
-    <Description @register="registerDev" class="enter-y" />
-  </PageWrapper>
+  <div>
+    <BasicTable @register="registerTable">
+      <template #toolbar></template>
+      <template #action="{ record }">
+        <TableAction
+          :actions="[
+            {
+              icon: 'mdi:camera-image',
+              onClick: handleDelete.bind(null, record)
+            },
+          ]"
+        />
+      </template>
+    </BasicTable>
+  </div>
 </template>
 <script lang="ts">
-  import { defineComponent, h } from 'vue';
-
-  import { Tag } from 'ant-design-vue';
-  import { PageWrapper } from '/@/components/Page';
-  import { Description, DescItem, useDescription } from '/@/components/Description/index';
-
-  import { GITHUB_URL, SITE_URL, DOC_URL } from '/@/settings/siteSetting';
+  import { defineComponent } from 'vue';
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { getRoleListByPage } from '/@/api/sys/system';
+  import { columns, searchFormSchema } from './role.data';
   export default defineComponent({
-    name: 'AboutPage',
-    components: { Description, PageWrapper },
+    name: 'RoleManagement',
+    components: { BasicTable, TableAction },
     setup() {
-      const { pkg, lastBuildTime } = __APP_INFO__;
-
-      const { dependencies, devDependencies, name, version } = pkg;
-
-      const schema: DescItem[] = [];
-      const devSchema: DescItem[] = [];
-
-      const commonTagRender = (color: string) => (curVal) => h(Tag, { color }, () => curVal);
-      const commonLinkRender = (text: string) => (href) => h('a', { href, target: '_blank' }, text);
-
-      const infoSchema: DescItem[] = [
-        {
-          label: '版本',
-          field: 'version',
-          render: commonTagRender('blue'),
+      const [registerTable] = useTable({
+        title: '车辆超速查询',
+        api: getRoleListByPage,
+        columns,
+        formConfig: {
+          labelWidth: 120,
+          schemas: searchFormSchema,
         },
-        {
-          label: '最后编译时间',
-          field: 'lastBuildTime',
-          render: commonTagRender('blue'),
+        useSearchForm: true,
+        showTableSetting: true,
+        bordered: true,
+        showIndexColumn: false,
+        actionColumn: {
+          width: 80,
+          title: '图片链接',
+          dataIndex: 'action',
+          slots: { customRender: 'action' },
+          fixed: undefined,
         },
-        {
-          label: '文档地址',
-          field: 'doc',
-          render: commonLinkRender('文档地址'),
-        },
-        {
-          label: '预览地址',
-          field: 'preview',
-          render: commonLinkRender('预览地址'),
-        },
-        {
-          label: 'Github',
-          field: 'github',
-          render: commonLinkRender('Github'),
-        },
-      ];
-
-      const infoData = {
-        version,
-        lastBuildTime,
-        doc: DOC_URL,
-        preview: SITE_URL,
-        github: GITHUB_URL,
+      });
+      function handleDelete(record: Recordable) {
+        console.log(record);
+      }
+      return {
+        registerTable,
+        handleDelete
       };
-
-      Object.keys(dependencies).forEach((key) => {
-        schema.push({ field: key, label: key });
-      });
-
-      Object.keys(devDependencies).forEach((key) => {
-        devSchema.push({ field: key, label: key });
-      });
-
-      const [register] = useDescription({
-        title: '生产环境依赖',
-        data: dependencies,
-        schema: schema,
-        column: 3,
-      });
-
-      const [registerDev] = useDescription({
-        title: '开发环境依赖',
-        data: devDependencies,
-        schema: devSchema,
-        column: 3,
-      });
-
-      const [infoRegister] = useDescription({
-        title: '项目信息',
-        data: infoData,
-        schema: infoSchema,
-        column: 2,
-      });
-
-      return { register, registerDev, infoRegister, name, GITHUB_URL };
     },
   });
 </script>

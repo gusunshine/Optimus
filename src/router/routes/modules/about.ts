@@ -9,8 +9,8 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/about/index',
   meta: {
-    icon: 'simple-icons:about-dot-me',
-    title: t('routes.dashboard.about'),
+    icon: 'ant-design:car-filled',
+    title: '车辆管理'//t('routes.dashboard.about'),
   },
   children: [
     {
@@ -18,8 +18,8 @@ const dashboard: AppRouteModule = {
       name: 'AboutPage',
       component: () => import('/@/views/sys/about/index.vue'),
       meta: {
-        title: t('routes.dashboard.about'),
-        icon: 'simple-icons:about-dot-me',
+        title: '车辆管理',//t('routes.dashboard.about'),
+        icon: 'ant-design:car-filled'
       },
     },
   ],

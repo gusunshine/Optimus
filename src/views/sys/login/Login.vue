@@ -1,9 +1,9 @@
 <template>
   <div :class="prefixCls" class="relative w-full h-full px-4">
-    <AppLocalePicker
+    <!-- <AppLocalePicker
       class="absolute top-4 right-4 enter-x text-white xl:text-gray-600"
       :showText="false"
-    />
+    /> -->
     <AppDarkModeToggle class="absolute top-3 right-7 enter-x" />
 
     <span class="-enter-x xl:hidden">
@@ -21,11 +21,11 @@
               class="w-1/2 -mt-16 -enter-x"
             />
             <div class="mt-10 font-medium text-white -enter-x">
-              <span class="mt-4 text-3xl inline-block"> {{ t('sys.login.signInTitle') }}</span>
+              <span class="mt-4 text-3xl inline-block">车辆出闸管理系统</span>
             </div>
-            <div class="mt-5 text-md text-white font-normal dark:text-gray-500 -enter-x">
+            <!-- <div class="mt-5 text-md text-white font-normal dark:text-gray-500 -enter-x">
               {{ t('sys.login.signInDesc') }}
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="h-full xl:h-auto flex py-5 xl:py-0 xl:my-0 w-full xl:w-6/12">

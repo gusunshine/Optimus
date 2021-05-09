@@ -5,7 +5,7 @@ const about: MenuModule = {
   orderNo: 100000,
   menu: {
     path: '/about/index',
-    name: t('routes.dashboard.about'),
+    name: '车辆管理' // t('routes.dashboard.about'),
   },
 };
 export default about;
